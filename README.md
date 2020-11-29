@@ -38,7 +38,7 @@ juusmenu is free software, licensed under the GNU GPL, version 3.
 
 Install in the usual Go manner with: 
 
-``` go
+```
 go get github.com/Juuliuus/juusmenu
 ```
 
@@ -328,6 +328,6 @@ func getSqrSqrRoot(n float64) float64 {
 ```
 
 -------------------------------------------------------------------------------
-##History##
+### History ###
 
 v1.0.0 December 2020
