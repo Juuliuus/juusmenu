@@ -65,15 +65,15 @@ func init() {
 	alignerLocal = alignerLeft
 
 	MenuOptions = &menuOptions{
-		funcBracketTop:         funcBracketTopStr,
-		funcBracketBottom:      funcBracketBottomStr,
-		idFuncRunner:           true,
-		killPhrase:             killPhraseStr,
-		menuPrompt:             menuPromptStr,
-		menuSeparator:          menuSeparatorStr,
-		pauseOnOutput:          true,
-		runTimeErrMsgs_Display: true,
-		runTimeErrMsgs_Pause:   true,
+		funcBracketTop:        funcBracketTopStr,
+		funcBracketBottom:     funcBracketBottomStr,
+		idFuncRunner:          true,
+		killPhrase:            killPhraseStr,
+		menuPrompt:            menuPromptStr,
+		menuSeparator:         menuSeparatorStr,
+		pauseOnOutput:         true,
+		runTimeErrMsgsDisplay: true,
+		runTimeErrMsgsPause:   true,
 	}
 }
 
@@ -83,31 +83,33 @@ type (
 	menuList    []*Menu
 )
 
-var ( //many of these are "constants", but there is a need to pass &addresses
+//many of these are "constants", but there is a need to pass &addresses
+var (
+	//MenuOptions : structure holding options common to all menus
 	MenuOptions *menuOptions
 	//private
-	additionalString          = "\n^^^ Important information above, please read..."
-	alignerLeft               *tabwriter.Writer
-	alignerLocal              *tabwriter.Writer
-	alignerRight              *tabwriter.Writer
-	allMenus                  menuList
-	defBreakh                 = "Quit this Menu"
-	defBreakv                 = "QQ.QQ"
-	defidFuncRunner           = true
-	defpauseOnOutput          = true
-	defrunTimeErrMsgs_Display = true
-	defrunTimeErrMsgs_Pause   = true
-	emptyHint                 = "Menu hint not specified"
-	emptyString               = ""
-	funcBracketBottomStr      = "..............*"
-	funcBracketTopStr         = "*.............."
-	killPhraseStr             = "Bye!"
-	killSwitch                = false
-	menuID                    = 0
-	menuPromptStr             = ">>: "
-	menuScanner               *bufio.Scanner //all Menu's will use this
-	menuSeparatorStr          = ":"
-	unNamedMenuTitle          = "UnNamedMenu"
+	additionalString         = "\n^^^ Important information above, please read..."
+	alignerLeft              *tabwriter.Writer
+	alignerLocal             *tabwriter.Writer
+	alignerRight             *tabwriter.Writer
+	allMenus                 menuList
+	defBreakh                = "Quit this Menu"
+	defBreakv                = "QQ.QQ"
+	defidFuncRunner          = true
+	defpauseOnOutput         = true
+	defrunTimeErrMsgsDisplay = true
+	defrunTimeErrMsgsPause   = true
+	emptyHint                = "Menu hint not specified"
+	emptyString              = ""
+	funcBracketBottomStr     = "..............*"
+	funcBracketTopStr        = "*.............."
+	killPhraseStr            = "Bye!"
+	killSwitch               = false
+	menuID                   = 0
+	menuPromptStr            = ">>: "
+	menuScanner              *bufio.Scanner //all Menu's will use this
+	menuSeparatorStr         = ":"
+	unNamedMenuTitle         = "UnNamedMenu"
 )
 
 const (
@@ -146,15 +148,15 @@ const (
 //see const's at bottom of unit, for an explanation
 //of the meaning of these fields
 type menuOptions struct {
-	funcBracketTop         string
-	funcBracketBottom      string
-	killPhrase             string
-	idFuncRunner           bool
-	menuPrompt             string
-	menuSeparator          string
-	pauseOnOutput          bool
-	runTimeErrMsgs_Display bool
-	runTimeErrMsgs_Pause   bool
+	funcBracketTop        string
+	funcBracketBottom     string
+	killPhrase            string
+	idFuncRunner          bool
+	menuPrompt            string
+	menuSeparator         string
+	pauseOnOutput         bool
+	runTimeErrMsgsDisplay bool
+	runTimeErrMsgsPause   bool
 }
 
 //Stringer for menuOptions
@@ -166,8 +168,8 @@ func (mo *menuOptions) String() string {
 		fmt.Sprintf(f, "menuPrompt", mo.menuPrompt, menuPromptStr) + "\n" +
 		fmt.Sprintf(f, "menuSeparator", mo.menuSeparator, menuSeparatorStr) + "\n" +
 		fmt.Sprintf(f, "pauseOnOutput", mo.pauseOnOutput, defpauseOnOutput) + "\n" +
-		fmt.Sprintf(f, "runTimeErrMsgs_Display", mo.runTimeErrMsgs_Display, defrunTimeErrMsgs_Display) + "\n" +
-		fmt.Sprintf(f, "runTimeErrMsgs_Pause", mo.runTimeErrMsgs_Pause, defrunTimeErrMsgs_Pause) + "\n" +
+		fmt.Sprintf(f, "runTimeErrMsgsDisplay", mo.runTimeErrMsgsDisplay, defrunTimeErrMsgsDisplay) + "\n" +
+		fmt.Sprintf(f, "runTimeErrMsgsPause", mo.runTimeErrMsgsPause, defrunTimeErrMsgsPause) + "\n" +
 		fmt.Sprintf(f, "funcBracketTop", mo.funcBracketTop, funcBracketTopStr) + "\n" +
 		fmt.Sprintf(f, "funcBracketBottom", mo.funcBracketBottom, funcBracketBottomStr) + "\n" +
 		fmt.Sprint("\n>> execute fmt.Println(<unit>.MenuOptions.InfoMenuOptions()) for field information") + "\n\n"
@@ -181,8 +183,8 @@ func (mo *menuOptions) InfoMenuOptions() string {
 		menuPromptInfo + "\n\n" +
 		menuSeparatorInfo + "\n\n" +
 		pauseOnOutputInfo + "\n\n" +
-		runTimeErrMsgs_DisplayInfo + "\n\n" +
-		runTimeErrMsgs_PauseInfo + "\n\n" +
+		runTimeErrMsgsDisplayInfo + "\n\n" +
+		runTimeErrMsgsPauseInfo + "\n\n" +
 		funcBracketTopInfo + "\n\n" +
 		funcBracketBottomInfo + "\n\n" +
 		fmt.Sprint(">> execute fmt.Println(<unit>.MenuOptions()) for field values") + "\n\n"
@@ -249,23 +251,24 @@ func (mo *menuOptions) SetIdFuncRunner(val bool) {
 	mo.idFuncRunner = val
 }
 
-//SetRunTimeErrMsgs_Display : if true error conditions will print at run time.
+//SetRunTimeErrMsgsDisplay : if true error conditions will print at run time.
 //Intended for the devlopment phase of your project, because no particular need
 //to check error results, they will always be printed. If your project is finished
 //I, personally, would still leave this on. It may be of use to your users too.
 //If you set this to false, then you will need to handle errors and decide if you
 //want them displayed. There are, really, no fatal errors in system except for
 //Menu.Start() and menuSystem.StartMenuSystem()
-func (mo *menuOptions) SetRunTimeErrMsgs_Display(val bool) {
-	mo.runTimeErrMsgs_Display = val
+func (mo *menuOptions) SetRunTimeErrMsgsDisplay(val bool) {
+	mo.runTimeErrMsgsDisplay = val
 }
 
-//SetRunTimeErrMsgs_Pause : if true error conditions printed at run time will pause
+//SetRunTimeErrMsgsPause : if true error conditions printed at run time will pause
 //for user acknowledgement. Intended for the devlopment phase of your project.
-func (mo *menuOptions) SetRunTimeErrMsgs_Pause(val bool) {
-	mo.runTimeErrMsgs_Pause = val
+func (mo *menuOptions) SetRunTimeErrMsgsPause(val bool) {
+	mo.runTimeErrMsgsPause = val
 }
 
+//Menu : Structure holding a menu's fields
 type Menu struct {
 	Title string //use this or GetID for use in switch statements
 	//private
@@ -449,6 +452,7 @@ type MenuSystemInterface interface {
 //menuSystem : a place to park a couple of system funcs, is type MenuSystemInterface
 type menuSystem struct{}
 
+//MenuSystem : variable pointing to MenuSystemInterface which allows general menu system function calls
 var MenuSystem menuSystem
 
 //WasKilled : Adds ability to check if the user killed the menu system using the killPhrase
@@ -586,7 +590,7 @@ func (menu *Menu) SetMenuBreakItem(val string, hint string, afunc func()) error 
 	valueClean(&hint, &defBreakh, vIgnore, func() {})
 
 	if _, ok := menu.entries[breakIndicator]; ok {
-		//they've accidently sent in the breakindicator again, or it is dynamically changed,
+		//they've accidentally sent in the breakindicator again, or it is dynamically changed,
 		//Take the newest values
 		menu.entries[breakIndicator].value = val
 		menu.entries[breakIndicator].hint = hint
@@ -697,11 +701,11 @@ func (menu *Menu) RemoveMenuEntry(key string) error {
 //you always check error values. These displays can be turned off/on
 //with MenuOptions.
 func alertUser(errmsg *string) {
-	if !MenuOptions.runTimeErrMsgs_Display {
+	if !MenuOptions.runTimeErrMsgsDisplay {
 		return
 	}
 	fmt.Printf("\n" + *errmsg + "\n")
-	if MenuOptions.runTimeErrMsgs_Pause {
+	if MenuOptions.runTimeErrMsgsPause {
 		WaitForInput(&additionalString)
 	}
 }
@@ -1015,10 +1019,9 @@ func (menu *Menu) droppingDown() bool {
 	if dropDown.doDropDown {
 		if menu.id != dropDown.id {
 			return true
-		} else {
-			dropDown.doDropDown = false
-			return false
 		}
+		dropDown.doDropDown = false
+		return false
 	}
 	return false
 }
@@ -1046,9 +1049,8 @@ func (menu *Menu) printFuncBrackets(brType bracketSwitch, choice string) {
 	getfuncRunnerStr := func(indicator string) string {
 		if MenuOptions.idFuncRunner {
 			return fmt.Sprintf(funcRunnerID, indicator, menu.Title, choice)
-		} else {
-			return ""
 		}
+		return ""
 	}
 
 	switch brType {
@@ -1064,7 +1066,7 @@ func (menu *Menu) printFuncBrackets(brType bracketSwitch, choice string) {
 	}
 }
 
-//Start() : Start the calling Menu. Can be called on any menu at any time.
+//Start : Start the calling Menu. Can be called on any menu at any time.
 //Only the main (root) menu needs to be Start'ed to run the menu system.  Or, one
 //can use the StartMenuSystem() call. This can be called on ANY menu so that
 //the programmer can do as she likes. But for a managed system it is recommended
@@ -1209,7 +1211,7 @@ prompt default value.`
 	pauseOnOutputInfo = `pauseOnOutput: if true will wait for user to press 
 <RET> after outputting func() results. Otherwise 
 immediately returns menu display`
-	runTimeErrMsgs_DisplayInfo = `runTimeErrMsgs_Display: Certain methods print out 
+	runTimeErrMsgsDisplayInfo = `runTimeErrMsgsDisplay: Certain methods print out 
 error messages directly to the screen, as well as 
 returning errors. The printed messages are useful 
 during development, particularly for dynamically
@@ -1217,11 +1219,11 @@ manipulated menus. Once you are happy with your
 code, this can be set to false. But then you will need 
 to check returned error values manually to handle 
 and/or print out the error messages. A false value 
-here implies a false value for the _Pause variant`
-	runTimeErrMsgs_PauseInfo = `runTimeErrMsgs_Pause: If this value is true, runtime 
+here implies a false value for the Pause variant`
+	runTimeErrMsgsPauseInfo = `runTimeErrMsgsPause: If this value is true, runtime 
 err msgs will pause for user input acknowledgement 
 so they can be read. If false the err msgs will display 
-if the _Display variant is true, but the menu system 
+if the Display variant is true, but the menu system 
 will not pause after each msg. There is a lot of 
 validation and error conditions checking but almost 
 all of them are not fatal and Menus will run in almost 
