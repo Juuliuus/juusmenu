@@ -20,13 +20,11 @@ juusmenu is free software, licensed under the GNU GPL, version 3.
     Sub-Menus, or Choose One's) and any menu can be called at any time from any other
     menu.
 
-  * Any menu can be run-time manipulated at any time by any other
-    menu, even if the menu is currently running. 
+  * Any existing, created, menu can be run-time manipulated at any time by any other
+    menu, even if the menu is currently displaying. 
 		
   * A menu can be set to "Choose One" mode for those
     yes/no/maybe/cancel menu types.
-
-  * Menu Entries can run any possible func()
 
   * It is written in pure Go, no other dependencies.
 
