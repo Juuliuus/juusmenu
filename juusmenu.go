@@ -991,12 +991,16 @@ func (menu *Menu) displayMenu() {
 	//get and print menu breadcrumbs, this is the most dangerous part
 	//of this code because here one could go circular. All the current
 	//validation code prevents this from happening.
+	//and I've added an "bailout" check
 	menuSep := fmt.Sprintf(" %s ", MenuOptions.menuSeparator)
-	parentsTitles := ""
-	menuParent := menu.parent
+	parentsTitles, checkInfinite, menuParent := "", 0, menu.parent
 	for menuParent != nil {
 		parentsTitles = menuParent.Title + menuSep + parentsTitles
 		menuParent = menuParent.parent
+		checkInfinite++
+		if checkInfinite > len(allMenus) {
+			panic("Menu breadcrumbs appear to be going infinite")
+		}
 	}
 	fmt.Println(parentsTitles + menu.Title)
 
